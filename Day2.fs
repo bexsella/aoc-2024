@@ -18,20 +18,16 @@
             |> List.length
 
         let dampenSafety (xs:int list) =
-            match safetyPredicate (diff xs) with
-            | true
-            | false -> (
-                let mutable dampened = []
-                for i = 0 to xs.Length - 1 do 
-                    dampened <- diff (xs |> List.removeAt i) :: dampened
-            
-                dampened
-                |> List.filter safetyPredicate
-                |> List.length > 0)
+            let rec safeTest (xs:int list) (i:int) =
+                if i = xs.Length then false
+                elif xs |> List.removeAt(i) |> diff |> safetyPredicate then true
+                else safeTest xs (i+1)
+
+            safeTest xs 0
 
         let determineSafetyDampen (xs:int list list) = 
             xs
-            |> List.filter dampenSafety
+            |> List.filter (fun e -> safetyPredicate (diff e) || dampenSafety e)
             |> List.length
 
         let solve =
