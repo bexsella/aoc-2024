@@ -3,8 +3,6 @@
         open System
         open System.IO
 
-        type Safety = | None | Inc | Dec
-
         let diff (xs:int list) = xs |> List.pairwise |> List.map(fun p -> fst p - snd p)
 
         let readIntLists (inputPath:string) =
@@ -21,7 +19,7 @@
 
         let dampenSafety (xs:int list) =
             match safetyPredicate (diff xs) with
-            | true -> true
+            | true
             | false -> (
                 let mutable dampened = []
                 for i = 0 to xs.Length - 1 do 
